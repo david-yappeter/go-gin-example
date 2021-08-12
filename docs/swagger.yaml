@@ -1,0 +1,54 @@
+definitions:
+  dto.JWT:
+    properties:
+      data:
+        properties:
+          token:
+            type: string
+          type:
+            type: string
+        type: object
+      error_msg:
+        type: string
+    type: object
+  entity.UserLoginForm:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    type: object
+info:
+  contact: {}
+paths:
+  /login:
+    post:
+      description: Authenticates a user and provides a JWT to Authorize API calls
+      operationId: Authentication
+      parameters:
+      - description: Email & Password
+        in: body
+        name: UserData
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UserLoginForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.JWT'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.JWT'
+      summary: Provides a JSON Web Token
+securityDefinitions:
+  bearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
